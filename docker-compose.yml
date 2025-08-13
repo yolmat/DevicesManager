@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  db-devices-manager:
+    image: postgres:alpine
+    ports:
+      - "5436:5432"
+    container_name: "db-devices-manager"
+    restart: always
+    volumes:
+      - ./db-devices-manager:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: db-devices-manager
+      POSTGRES_PASSWORD: teste
+      PGDATA: /var/lib/postgresql/data/some_name/
+volumes:
+  db-devices-manager:
