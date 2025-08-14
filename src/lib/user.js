@@ -2,8 +2,7 @@ import db from "./db"
 import bcrypt from "bcrypt"
 
 export async function findUserByCredentials(email, password) {
-
-    const user = await db.user.findUnique({
+    const user = await db.user.findFirst({
         where: {
             email: email
         }
@@ -13,7 +12,7 @@ export async function findUserByCredentials(email, password) {
         return null
     }
 
-    const passwordMatch = bcrypt.compare(password, user.password)
+    const passwordMatch = bcrypt.compareSync(password, user.password)
 
     if (passwordMatch) {
         return {
