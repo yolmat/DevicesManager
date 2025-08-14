@@ -1,5 +1,6 @@
 'use server'
 
+import { isRedirectError } from "next/dist/client/components/redirect-error"
 import { signIn } from "../../../../auth"
 
 export default async function loginAction(prevState, formData) {
@@ -8,10 +9,15 @@ export default async function loginAction(prevState, formData) {
         await signIn('credentials', {
             email: formData.get('email'),
             password: formData.get('password'),
-            redirect: false
+            redirectTo: '/dashboard'
         })
         return { success: true }
     } catch (e) {
+
+        if (isRedirectError(e)) {
+            throw e
+        }
+
         if (e.type == 'CredentialsSignin') {
             return { success: false, message: 'Credenciais incorretas' }
         }

@@ -7,7 +7,6 @@ import Link from "next/link";
 export default function LoginForm() {
 
     const [state, formAction, isPending] = useActionState(loginAction, null)
-    console.log(state)
 
     return (
         <>

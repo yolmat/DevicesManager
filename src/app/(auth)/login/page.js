@@ -1,7 +1,14 @@
-import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "../../../../auth";
 import LoginForm from "./loginForm";
 
-export default function Example() {
+export default async function Login() {
+
+    const session = await auth()
+    if (session) {
+        return redirect('/dashboard')
+    }
+
     return (
         <>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
