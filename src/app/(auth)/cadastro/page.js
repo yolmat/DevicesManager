@@ -1,6 +1,14 @@
 import RegisterForm from './registerForm'
+import { redirect } from "next/navigation";
+import { auth } from '../../../../auth';
 
-export default function Cadastro() {
+export default async function Cadastro() {
+
+    const session = await auth()
+    if (session) {
+        return redirect('/dashboard')
+    }
+
     return (
         <>
             <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

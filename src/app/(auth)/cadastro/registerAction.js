@@ -1,5 +1,6 @@
 'use server'
 
+import { redirect } from "next/navigation"
 import db from "../../../lib/db"
 import bcrypt from "bcrypt"
 
@@ -38,8 +39,5 @@ export default async function registerAction(_prevState, formData) {
         }
     })
 
-    return {
-        message: 'usuario criado',
-        success: true
-    }
+    return redirect('/Login')
 }
