@@ -2,6 +2,7 @@
 import Form from 'next/form'
 import registerAction from './registerAction'
 import { useActionState } from 'react'
+import Link from 'next/link'
 
 
 export default function RegisterForm() {
@@ -35,7 +36,7 @@ export default function RegisterForm() {
 
                 <div>
                     <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900 dark:text-gray-100">
-                        Email address
+                        Email
                     </label>
                     <div className="mt-2">
                         <input
@@ -76,6 +77,8 @@ export default function RegisterForm() {
                     </button>
                 </div>
             </Form>
+            <p className="mt-6 text-sm/6">Caso já tenha se cadastrado, <Link href="/login" className="text-indigo-500 font-semibold hover:text-indigo-400">Click Aqui</Link></p>
+
         </>
     )
 }
