@@ -16,7 +16,6 @@ export default async function Home() {
       <div className="flex flex-row items-center justify-center gap-10">
         <ButtonRedirect onLink="/login">Login</ButtonRedirect>
         <ButtonRedirect onLink="/cadastro">Cadastro</ButtonRedirect>
-
       </div>
     </div>
   );
