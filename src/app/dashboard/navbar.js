@@ -8,8 +8,9 @@ export default async function Navbar() {
     return (
         <div className="flex flex-row h-16 items-center justify-center gap-5">
             <Link href="/dashboard" className="text-gray-300 hover:bg-white/5 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</Link>
+            <Link href="/dashboard/createDevice" className="text-gray-300 hover:bg-white/5 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Criar Dispositivo</Link>
             <Form action={logoutAction}>
-                <button className="text-gray-300 hover:bg-white/5 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">Logout</button>
+                <button className="text-gray-300 hover:bg-white/5 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">Sair</button>
             </Form>
         </div>
 
