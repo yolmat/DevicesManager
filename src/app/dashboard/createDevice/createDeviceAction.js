@@ -1,5 +1,6 @@
 'use server'
 
+import { redirect } from "next/navigation"
 import db from "../../../lib/db"
 
 export default async function CreateDeviceAction(_prevState, formData) {
@@ -37,5 +38,5 @@ export default async function CreateDeviceAction(_prevState, formData) {
         }
     })
 
-    return console.log("cadastrado")
+    return redirect('/dashboard')
 }
