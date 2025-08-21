@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Devices() {
@@ -7,6 +8,8 @@ export default function Devices() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
+
+    const router = useRouter()
 
     useEffect(() => {
         async function fetchDevices() {
@@ -16,7 +19,7 @@ export default function Devices() {
                 if (!response.ok) throw new Error('erro ao buscas dispositivos')
 
                 const devices = await response.json()
-                console.log(devices)
+
                 setData(devices)
             } catch (e) {
                 setError(true)
@@ -28,6 +31,10 @@ export default function Devices() {
         fetchDevices()
 
     }, [])
+
+    const handleClick = (id) => {
+        router.push(`/dashboard/${id}`)
+    }
 
     return (
         <ul role="list" className="divide-y divide-white/5">
@@ -68,7 +75,11 @@ export default function Devices() {
 
                     </div>
                     <div className='flex justify-end'>
-                        <button className="text-gray-300 bg-gray-800 hover:bg-gray-800/70 active:bg-gray-800/50 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">Abrir Dispositivo</button>
+                        <button
+                            onClick={() => handleClick(device.id)}
+                            className="text-gray-300 bg-gray-800 hover:bg-gray-800/70 active:bg-gray-800/50 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">
+                            Abrir Dispositivo
+                        </button>
                     </div>
                 </li>
             ))}
