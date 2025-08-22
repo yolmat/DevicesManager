@@ -1,8 +1,10 @@
 'use client'
 
-import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { useActionState, useEffect, useState } from 'react'
 import Form from 'next/form'
+import TextareaAutosize from "react-textarea-autosize"
+import PutDeviceAction from './putDeviceAction'
 
 export default function Device() {
 
@@ -12,17 +14,21 @@ export default function Device() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [status, setStatus] = useState(false)
+    const [historys, setHistorys] = useState([])
 
     useEffect(() => {
         async function fetchDevices() {
             setLoading(true)
             try {
-                console.log(id)
                 const response = await fetch(`/api/device/${id}`)
+
                 if (!response.ok) throw new Error('erro ao busca dispositivo')
 
+
                 const device = await response.json()
+
                 console.log(device)
+
                 setData(device)
             } catch (e) {
                 setError(true)
@@ -31,22 +37,41 @@ export default function Device() {
             }
         }
 
-        if (id) fetchDevices()
+        fetchDevices()
 
     }, [id])
 
     useEffect(() => {
-        if (data.status !== undefined) {
-            setStatus(data.status) // já vem true ou false do banco
-        }
-    }, [data])
+        async function fetchHistory() {
+            try {
+                const response = await fetch(`/api/historys/${id}`)
 
+                if (!response.ok) throw new Error('erro ao historico do dispositivo')
+
+                const historys = await response.json()
+
+                console.log(historys)
+
+                setHistorys(historys)
+            } catch (e) {
+                setError(true)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchHistory()
+
+    }, [id])
+
+    const [state, formAction, isPeding] = useActionState(PutDeviceAction, null)
 
     return (
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <Form action className="space-y-6">
+            <Form action={formAction} className="space-y-6">
+                <input className="hidden" id="id" name="id" type='text' defaultValue={id} />
                 <div>
-                    <label htmlFor="credentials-email" className="block text-sm/6 font-medium text-gray-100">
+                    <label htmlFor="credentials-email" className="block text-sm/6 font-bold text-gray-100">
                         Usuario do dispositivo
                     </label>
                     <div className="mt-2">
@@ -63,7 +88,7 @@ export default function Device() {
 
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
+                        <label htmlFor="credentials-password" className="block text-sm/6 font-bold text-gray-100">
                             Dispositivo
                         </label>
                     </div>
@@ -81,7 +106,7 @@ export default function Device() {
 
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
+                        <label htmlFor="credentials-password" className="block text-sm/6 font-bold text-gray-100">
                             Tipo do dispositivo
                         </label>
                     </div>
@@ -99,7 +124,7 @@ export default function Device() {
 
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
+                        <label htmlFor="credentials-password" className="block text-sm/6 font-bold text-gray-100">
                             Numero do Serial
                         </label>
                     </div>
@@ -117,7 +142,7 @@ export default function Device() {
 
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
+                        <label htmlFor="credentials-password" className="block text-sm/6 font-bold text-gray-100">
                             Status
                         </label>
                     </div>
@@ -135,11 +160,33 @@ export default function Device() {
 
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
+                        <label htmlFor="credentials-password" className="block text-sm/6 font-bold text-gray-100">
                             Historico
                         </label>
                     </div>
                     <div className="mt-2">
+
+                        <TextareaAutosize
+                            id="comment"
+                            name="comment"
+                            type="text"
+                            minRows={2}
+                            placeholder='Digite o seu novo historico'
+                            className="block mt-4 w-full h-auto rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                        />
+
+                        {historys.map((comments) => (
+                            <TextareaAutosize
+                                key={comments.id}
+                                id={`comment${comments.id}`}
+                                name={`comment${comments.id}`}
+                                type="text"
+                                minRows={2}
+                                defaultValue={comments.comments}
+                                className="block mt-4 w-full h-auto rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                            />
+                        ))
+                        }
                     </div>
                 </div>
 
