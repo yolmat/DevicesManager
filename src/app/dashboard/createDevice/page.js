@@ -1,4 +1,3 @@
-import Navbar from "../navbar"
 import CreateDeviceForm from './createDeviceForm'
 
 export default async function CreateDevice() {
