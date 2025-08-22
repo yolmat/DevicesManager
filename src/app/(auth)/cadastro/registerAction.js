@@ -39,5 +39,5 @@ export default async function registerAction(_prevState, formData) {
         }
     })
 
-    return redirect('/Login')
+    return redirect('/login')
 }
