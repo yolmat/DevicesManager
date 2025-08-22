@@ -34,7 +34,8 @@ export default async function CreateDeviceAction(_prevState, formData) {
             deviceType: data.deviceType,
             serialNumber: data.serialNumber,
             userDevice: data.userDevice,
-            status: false
+            status: false,
+            Qrcode: ""
         }
     })
 
