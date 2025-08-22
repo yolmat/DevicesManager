@@ -32,7 +32,8 @@ export default async function PutDeviceAction(_prevState, formData) {
             device: data.device,
             deviceType: data.deviceType,
             serialNumber: data.serialNumber,
-            status: newStatus
+            status: newStatus,
+            Qrcode: `/${id}`
         }
     })
 
@@ -44,4 +45,6 @@ export default async function PutDeviceAction(_prevState, formData) {
             }
         })
     }
+
+    return redirect('/dashboard')
 }

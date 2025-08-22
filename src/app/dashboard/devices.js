@@ -36,10 +36,14 @@ export default function Devices() {
         router.push(`/dashboard/${id}`)
     }
 
+    const handleQrcode = (link) => {
+        router.push(`/dashboard/qrcode/${link}`)
+    }
+
     return (
         <ul role="list" className="divide-y divide-white/5">
             {data.map((device) => (
-                <li key={device.id} className="relative flex items-center justify-between gap-x-6 py-5">
+                <li key={device.id} className="relative flex items-center justify-around gap-x-6 py-5">
                     <div className="flex text-start min-w-0 gap-x-4">
                         <div className="min-w-0 flex-auto">
                             <p className="text-sm/6 font-semibold text-white">{device.device}</p>
@@ -79,6 +83,14 @@ export default function Devices() {
                             onClick={() => handleClick(device.id)}
                             className="text-gray-300 bg-gray-800 hover:bg-gray-800/70 active:bg-gray-800/50 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">
                             Abrir Dispositivo
+                        </button>
+                    </div>
+
+                    <div className='flex justify-end'>
+                        <button
+                            onClick={() => handleQrcode(device.Qrcode)}
+                            className="text-gray-300 bg-gray-800 hover:bg-gray-800/70 active:bg-gray-800/50 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">
+                            Qrcode
                         </button>
                     </div>
                 </li>
