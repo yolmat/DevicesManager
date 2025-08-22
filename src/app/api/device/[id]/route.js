@@ -3,7 +3,7 @@ import db from "../../../../lib/db"
 
 export async function GET(request, { params }) {
 
-    const { id } = params
+    const id = params.id
 
     try {
         const device = await db.devices.findFirst({
