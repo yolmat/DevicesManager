@@ -19,7 +19,9 @@ export default async function CreateDeviceAction(_prevState, formData) {
         where: {
             serialNumber: data.serialNumber
         }
-    })
+    }).then(device => !!device)
+
+    console.log(device)
 
     if (device) {
         return {
