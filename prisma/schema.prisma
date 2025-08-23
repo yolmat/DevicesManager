@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -25,20 +19,20 @@ model User {
 
 model Devices {
   id           Int       @id @unique @default(autoincrement())
-  userDevice   String
   device       String
   deviceType   String
   serialNumber String    @unique
-  status       Boolean
-  historys     History[]
-  Qrcode       String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  status       Boolean
+  userDevice   String
+  Qrcode       String
+  historys     History[]
 }
 
 model History {
   id        Int      @id @unique @default(autoincrement())
-  Devices   Devices? @relation(fields: [devicesId], references: [id])
   devicesId Int?
   comments  String
+  Devices   Devices? @relation(fields: [devicesId], references: [id])
 }
