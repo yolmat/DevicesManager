@@ -1,45 +1,26 @@
 'use server'
 
 import { redirect } from "next/navigation"
-import db from "../../../lib/db"
 
 export default async function CreateDeviceAction(_prevState, formData) {
+    const data = Object.fromEntries(Array.from(formData.entries()))
 
-    const entries = Array.from(formData.entries())
-    const data = Object.fromEntries(entries)
+    // Resolve base URL automaticamente
+    const baseUrl = process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000"
 
-    if (!data.userDevice || !data.deviceType || !data.device || !data.serialNumber) {
-        return {
-            message: "Preencha todos os campos",
-            success: false
-        }
-    }
-
-    const device = await db.devices.findUnique({
-        where: {
-            serialNumber: data.serialNumber
-        }
-    }).then(device => !!device)
-
-    console.log(device)
-
-    if (device) {
-        return {
-            message: "esse usuario já existe",
-            success: false
-        }
-    }
-
-    await db.devices.create({
-        data: {
-            device: data.device,
-            deviceType: data.deviceType,
-            serialNumber: data.serialNumber,
-            userDevice: data.userDevice,
-            status: false,
-            Qrcode: ""
-        }
+    const res = await fetch(`${baseUrl}/api/devices/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
     })
 
-    return redirect('/dashboard')
+    const result = await res.json()
+
+    if (!result.success) {
+        return { success: false, message: result.message }
+    }
+
+    return redirect("/dashboard")
 }
