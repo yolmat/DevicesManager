@@ -1,16 +1,17 @@
 'use client'
+
 import Form from "next/form"
 import { useActionState } from "react"
 import CreateDeviceAction from './createDeviceAction'
 
 export default function CreateDeviceForm() {
-
-    const [state, formAction, isPeding] = useActionState(CreateDeviceAction, null)
+    const [state, formAction, isPending] = useActionState(CreateDeviceAction, null)
 
     return (
         <Form action={formAction} className="space-y-6">
+
             <div>
-                <label htmlFor="credentials-email" className="block text-sm/6 font-medium text-gray-100">
+                <label htmlFor="userDevice" className="block text-sm/6 font-medium text-gray-100">
                     Usuario do dispositivo
                 </label>
                 <div className="mt-2">
@@ -25,11 +26,9 @@ export default function CreateDeviceForm() {
             </div>
 
             <div>
-                <div className="flex items-center justify-between">
-                    <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
-                        Dispositivo
-                    </label>
-                </div>
+                <label htmlFor="device" className="block text-sm/6 font-medium text-gray-100">
+                    Dispositivo
+                </label>
                 <div className="mt-2">
                     <input
                         id="device"
@@ -42,11 +41,9 @@ export default function CreateDeviceForm() {
             </div>
 
             <div>
-                <div className="flex items-center justify-between">
-                    <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
-                        Tipo do dispositivo
-                    </label>
-                </div>
+                <label htmlFor="deviceType" className="block text-sm/6 font-medium text-gray-100">
+                    Tipo do dispositivo
+                </label>
                 <div className="mt-2">
                     <input
                         id="deviceType"
@@ -59,11 +56,9 @@ export default function CreateDeviceForm() {
             </div>
 
             <div>
-                <div className="flex items-center justify-between">
-                    <label htmlFor="credentials-password" className="block text-sm/6 font-medium text-gray-100">
-                        Numero do Serial
-                    </label>
-                </div>
+                <label htmlFor="serialNumber" className="block text-sm/6 font-medium text-gray-100">
+                    Numero do Serial
+                </label>
                 <div className="mt-2">
                     <input
                         id="serialNumber"
@@ -77,12 +72,20 @@ export default function CreateDeviceForm() {
 
             <div>
                 <button
+                    type="submit"
+                    disabled={isPending}
                     className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                 >
-                    Criar
+                    {isPending ? "Criando..." : "Criar"}
                 </button>
             </div>
-        </Form>
 
+            {state?.message && (
+                <p className={`mt-2 text-sm ${state.success ? "text-green-500" : "text-red-500"}`}>
+                    {state.message}
+                </p>
+            )}
+
+        </Form>
     )
 }
