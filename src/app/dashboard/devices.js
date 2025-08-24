@@ -88,7 +88,7 @@ export default function Devices() {
 
                     <div className='flex justify-end'>
                         <button
-                            onClick={() => handleQrcode(device.Qrcode)}
+                            onClick={() => handleQrcode(device.id)}
                             className="text-gray-300 bg-gray-800 hover:bg-gray-800/70 active:bg-gray-800/50 hover:text-white rounded-md px-3 py-2 text-sm font-medium hover:cursor-pointer">
                             Qrcode
                         </button>
