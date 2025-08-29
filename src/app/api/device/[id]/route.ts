@@ -3,15 +3,13 @@ import db from "../../../../lib/db";
 
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
-) {
-  const id = context.params.id;
+  { params }: { params: Promise<{ id: string }> }
+): Promise<NextResponse> {
+  const { id } = await params;
 
   try {
     const device = await db.devices.findFirst({
-      where: {
-        id: Number(id),
-      },
+      where: { id: Number(id) },
     });
 
     if (!device) {
