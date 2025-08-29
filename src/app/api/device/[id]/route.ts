@@ -3,9 +3,9 @@ import db from "../../../../lib/db";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const id = params.id;
+  const id = context.params.id;
 
   try {
     const device = await db.devices.findFirst({
@@ -20,6 +20,7 @@ export async function GET(
         { status: 404 }
       );
     }
+
     return NextResponse.json(device);
   } catch (e) {
     return NextResponse.json(

@@ -3,9 +3,9 @@ import db from "../../../../lib/db";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const id = params.id;
+  const id = context.params.id;
 
   try {
     const device = await db.history.findMany({
