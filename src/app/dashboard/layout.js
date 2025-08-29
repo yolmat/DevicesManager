@@ -1,6 +1,14 @@
 import Navbar from "./navbar"
+import { auth } from "../../../auth"
+import { redirect } from "next/navigation"
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
+
+  const session = await auth()
+  if (!session) {
+    return redirect('/')
+  }
+
   return (
     <section className="min-h-full">
       <header as="nav" className="bg-gray-800 dark:bg-gray-800/50">
