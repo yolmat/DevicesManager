@@ -1,31 +1,34 @@
 "use client";
+
 import { cn } from "@/src/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import loginAction from "@/src/app/(auth)/login/loginAction";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type TformLogin = {
   email: string;
   password: string;
 };
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"form">) {
+type Props = {
+  loginAction: (email: string, password: string) => Promise<any>;
+  className?: string;
+};
+
+export function LoginFormClient({ loginAction, className }: Props) {
+  const router = useRouter();
+
   const form = useForm<TformLogin>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   async function handleSubmitLogin(data: TformLogin) {
-    loginAction(data.email, data.password);
-    console.log(await loginAction(data.email, data.password));
+    const result = await loginAction(data.email, data.password);
+    console.log(result);
+    router.push("/dashboard");
   }
 
   return (
@@ -40,6 +43,7 @@ export function LoginForm({
             Digite seu e-mail abaixo para acessar sua conta
           </p>
         </div>
+
         <div className="grid gap-6">
           <FormField
             control={form.control}
@@ -59,6 +63,7 @@ export function LoginForm({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -89,13 +94,15 @@ export function LoginForm({
           <Button type="submit" className="w-full">
             Entre
           </Button>
+
           <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
             <span className="bg-background text-muted-foreground relative z-10 px-2">
               Ou continue aqui
             </span>
           </div>
         </div>
-        <div className="text-center text-sm">
+
+        <div className="text-center text-sm mt-4">
           Ainda não tem uma conta?{" "}
           <Link href="/cadastro" className="underline underline-offset-4">
             Inscreva-se

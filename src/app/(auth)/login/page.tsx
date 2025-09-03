@@ -1,6 +1,6 @@
-import Banner from "@/public/BannerLogin.jpg"
-import { LoginForm } from "@/components/login-form"
-import Image from "next/image"
+import Banner from "@/public/BannerLogin.jpg";
+import LoginFormServer from "./LoginFormServer";
+import Image from "next/image";
 
 export default function LoginPage() {
   return (
@@ -8,7 +8,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+            <LoginFormServer />
           </div>
         </div>
       </div>
@@ -20,5 +20,5 @@ export default function LoginPage() {
         />
       </div>
     </div>
-  )
+  );
 }
