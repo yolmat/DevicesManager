@@ -44,7 +44,7 @@ export function RegisterDeviceForm({
         <div className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-2xl font-bold">Crie um novo Dispositivo</h1>
           <p className="text-muted-foreground text-sm text-balance">
-            Digite as informações abaixo para criar um novo dipositivo
+            Digite as informações abaixo para criar um novo dipositivo.
           </p>
         </div>
         <div className="grid gap-6">

@@ -1,50 +1,63 @@
-'use server'
+"use server";
 
-import { redirect } from "next/navigation"
-import db from "../../../lib/db"
+import { redirect } from "next/navigation";
+import db from "../../../lib/db";
 
-export default async function PutDeviceAction(_prevState, formData) {
+type TformUpdateDevice = {
+  id: string;
+  device: string;
+  deviceType: string;
+  serialNumber: string;
+  userDevice: string;
+  status: boolean;
+  Qrcode: string;
+  historys: string;
+};
 
-    const entries = Array.from(formData.entries())
-    const data = Object.fromEntries(entries)
-    const id = Number(data.id)
-    let newStatus
+export default async function PutDeviceAction(formData: TformUpdateDevice) {
+  const data = formData;
 
-    if (!data.userDevice || !data.device || !data.deviceType || !data.serialNumber) {
-        return {
-            message: "Preencha todos os campos",
-            success: false
-        }
-    }
+  console.log(data);
 
-    if (data.status == "on") {
-        newStatus = true
-    } else if (data.status == undefined) {
-        newStatus = false
-    }
+  const id = Number(data.id);
 
-    await db.devices.update({
-        where: {
-            id: id
-        },
-        data: {
-            userDevice: data.userDevice,
-            device: data.device,
-            deviceType: data.deviceType,
-            serialNumber: data.serialNumber,
-            status: newStatus,
-            Qrcode: `/${id}`
-        }
-    })
+  let newStatus;
 
-    if (data.comment !== "") {
-        await db.history.create({
-            data: {
-                devicesId: id,
-                comments: data.comment
-            }
-        })
-    }
+  if (!data.userDevice || !data.device || !data.serialNumber) {
+    return {
+      message: "Preencha todos os campos",
+      success: false,
+    };
+  }
 
-    return redirect('/dashboard')
+  if (data.status == true) {
+    newStatus = true;
+  } else if (data.status == undefined || data.status == false) {
+    newStatus = false;
+  }
+
+  await db.devices.update({
+    where: {
+      id: id,
+    },
+    data: {
+      userDevice: data.userDevice,
+      device: data.device,
+      deviceType: "",
+      serialNumber: data.serialNumber,
+      status: newStatus,
+      Qrcode: `/${id}`,
+    },
+  });
+
+  if (data.historys !== "") {
+    await db.history.create({
+      data: {
+        devicesId: id,
+        comments: data.historys,
+      },
+    });
+  }
+
+  return redirect("/dashboard");
 }

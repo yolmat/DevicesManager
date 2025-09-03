@@ -54,10 +54,6 @@ export default function Devices() {
     router.push(`/dashboard/${id}`);
   };
 
-  const handleQrcode = (link: string) => {
-    router.push(`/dashboard/qrcode/${link}`);
-  };
-
   return (
     <Table>
       <TableCaption className="gap-5">
