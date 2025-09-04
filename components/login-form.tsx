@@ -4,13 +4,26 @@ import { cn } from "@/src/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type TformLogin = {
   email: string;
   password: string;
+};
+
+type TResult = {
+  success: boolean;
+  message: string;
 };
 
 type Props = {
@@ -21,14 +34,16 @@ type Props = {
 export function LoginFormClient({ loginAction, className }: Props) {
   const router = useRouter();
 
+  const [successForm, setSuccessForm] = useState<TResult>();
+
   const form = useForm<TformLogin>({
     defaultValues: { email: "", password: "" },
   });
 
   async function handleSubmitLogin(data: TformLogin) {
-    const result = await loginAction(data.email, data.password);
-    console.log(result);
-    router.push("/dashboard");
+    const result: TResult = await loginAction(data.email, data.password);
+    setSuccessForm(result);
+    if (result.success === true) router.push("/dashboard");
   }
 
   return (
@@ -60,6 +75,11 @@ export function LoginFormClient({ loginAction, className }: Props) {
                     {...field}
                   />
                 </FormControl>
+                {successForm?.success === false ? (
+                  <FormMessage>Credenciais incorretas</FormMessage>
+                ) : (
+                  <FormMessage />
+                )}
               </FormItem>
             )}
           />
@@ -87,6 +107,11 @@ export function LoginFormClient({ loginAction, className }: Props) {
                     {...field}
                   />
                 </FormControl>
+                {successForm?.success === false ? (
+                  <FormMessage>Credenciais incorretas</FormMessage>
+                ) : (
+                  <FormMessage />
+                )}
               </FormItem>
             )}
           />
