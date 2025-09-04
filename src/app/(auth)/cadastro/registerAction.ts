@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import db from "@/src/lib/db";
 import bcrypt from "bcrypt";
 
@@ -26,18 +25,22 @@ export default async function registerAction(
 
   if (user) {
     return {
-      message: "esse usuario já existe",
+      message: "Usuario já cadastrado",
       success: false,
     };
   }
   // Criar usuario caso não exista
-  await db.user.create({
-    data: {
-      name: name,
-      email: email,
-      password: await bcrypt.hash(password, 10),
-    },
-  });
+  if (!user) {
+    await db.user.create({
+      data: {
+        name: name,
+        email: email,
+        password: await bcrypt.hash(password, 10),
+      },
+    });
 
-  return redirect("/login");
+    return { success: true, message: "Usuario criado. Entre agora" };
+  }
+
+  return { success: false, message: "Algum erro aconteceu" };
 }

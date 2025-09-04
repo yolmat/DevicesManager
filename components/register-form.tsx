@@ -6,6 +6,11 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
 import registerAction from "@/src/app/(auth)/cadastro/registerAction";
 import Link from "next/link";
+import { Alert, AlertTitle } from "./ui/alert";
+import { AlertCircleIcon } from "lucide-react";
+import { useState } from "react";
+import { redirect } from "next/navigation";
+import { useAlert } from "@/src/app/context/AlertContext";
 
 type TformRegister = {
   name: string;
@@ -13,10 +18,19 @@ type TformRegister = {
   password: string;
 };
 
+type TResult = {
+  success: boolean;
+  message: string;
+};
+
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const { showAlert } = useAlert();
+
+  const [successForm, setSuccessForm] = useState<TResult>();
+
   const form = useForm<TformRegister>({
     defaultValues: {
       name: "",
@@ -26,8 +40,9 @@ export function RegisterForm({
   });
 
   async function handleSubmitRegister(data: TformRegister) {
-    registerAction(data.name, data.email, data.password);
-    console.log(await registerAction(data.name, data.email, data.password));
+    const result = await registerAction(data.name, data.email, data.password);
+    setSuccessForm(result);
+    showAlert(result.message, result.success, 4000);
   }
 
   return (
@@ -97,6 +112,12 @@ export function RegisterForm({
               </FormItem>
             )}
           />
+          {successForm?.success === false ? (
+            <Alert variant="destructive">
+              <AlertCircleIcon />
+              <AlertTitle>{successForm.message}</AlertTitle>
+            </Alert>
+          ) : null}
 
           <Button type="submit" className="w-full">
             Cadastrar
@@ -114,6 +135,7 @@ export function RegisterForm({
           </Link>
         </div>
       </form>
+      {successForm?.success === true ? redirect("/login") : null}
     </Form>
   );
 }
