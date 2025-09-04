@@ -1,6 +1,8 @@
 import Navbar from "./navbar";
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/sonner";
+import { AlertProvider } from "@/src/app/context/AlertContext";
 
 export default async function DashboardLayout({
   children,
@@ -19,8 +21,10 @@ export default async function DashboardLayout({
           <Navbar />
         </div>
       </header>
-
-      {children}
+      <AlertProvider>
+        <Toaster richColors />
+        {children}
+      </AlertProvider>
     </section>
   );
 }
