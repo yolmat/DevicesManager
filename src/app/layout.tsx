@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Metadata } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,9 +13,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Gerenciador de Dispositivos",
-  description: "Gerencies todos os sesus dispositivos",
+export const metadata: Metadata = {
+  title: "Devices Manager",
+  description: "Gerencie todos os dispotivios dentro da sua empresa",
+  keywords: ["Gerenciamento", "Dispositivos", "Criação", "Next.js"],
+  openGraph: {
+    title: "Devices manager | Gerenciador de dispositivos",
+    description: "Gerencie todos os dispotivios dentro da sua empresa",
+    url: "https://devices.msaraiva.dev.br",
+    siteName: "Device Manager",
+    images: [
+      {
+        url: "og-image.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Imagem de compartilhamento",
+      },
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
