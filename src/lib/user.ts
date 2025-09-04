@@ -14,7 +14,7 @@ export async function findUserByCredentials(email: string, password: string) {
 
   const passwordMatch = bcrypt.compareSync(password, user.password);
 
-  if (password) {
+  if (passwordMatch) {
     return {
       name: user.name,
       email: user.email,
