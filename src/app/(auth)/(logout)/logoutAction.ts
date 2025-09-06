@@ -1,11 +1,15 @@
-'use server'
+"use server";
 
-import { signOut } from "@/auth"
-import { redirect } from "next/navigation"
+import { signOut } from "@/auth";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function logoutAction() {
+  const cookiesStore = await cookies();
 
-    await signOut()
+  cookiesStore.delete("createId");
 
-    return redirect('/')
+  await signOut();
+
+  return redirect("/");
 }
