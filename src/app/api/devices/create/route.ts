@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
       userDevice: data.userDevice,
       status: false,
       Qrcode: "",
+      creator: { connect: { id: data.CreatorId } },
     },
   });
 
