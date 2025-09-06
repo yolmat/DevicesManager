@@ -15,19 +15,25 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  devices Devices[]
 }
 
 model Devices {
-  id           Int       @id @unique @default(autoincrement())
+  id           Int      @id @unique @default(autoincrement())
   device       String
   deviceType   String
-  serialNumber String    @unique
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  serialNumber String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   status       Boolean
   userDevice   String
   Qrcode       String
-  historys     History[]
+
+  createdBy Int
+  creator   User? @relation(fields: [createdBy], references: [id])
+
+  historys History[]
 }
 
 model History {
@@ -35,4 +41,7 @@ model History {
   devicesId Int?
   comments  String
   Devices   Devices? @relation(fields: [devicesId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
