@@ -17,7 +17,6 @@ export default async function CreateDeviceAction(DataForm: object) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
-    cache: "no-store",
   });
 
   const result = await res.json();
