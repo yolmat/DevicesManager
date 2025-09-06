@@ -13,12 +13,19 @@ type TformRegisterDevice = {
   userDevice: string;
   status: boolean;
   Qrcode: string;
+  CreatorId: number;
 };
 
 export function RegisterDeviceForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
+  const getCreatorId = async () => {
+    const res = await fetch("/api/cookies", { credentials: "include" });
+    const data = await res.json();
+    return data.myNumber ?? 0; // se não existir cookie, retorna 0
+  };
+
   const form = useForm<TformRegisterDevice>({
     defaultValues: {
       device: "",
@@ -27,12 +34,18 @@ export function RegisterDeviceForm({
       userDevice: "",
       status: false,
       Qrcode: "",
+      CreatorId: 0,
     },
   });
 
-  async function handleSubmitLogin(data: object) {
-    CreateDeviceAction(data);
-    console.log(await CreateDeviceAction(data));
+  async function handleSubmitLogin(data: TformRegisterDevice) {
+    const creatorId = await getCreatorId();
+
+    const payload = { ...data, CreatorId: creatorId };
+
+    const result = await CreateDeviceAction(payload);
+
+    console.log("Dispositivo criado:", result);
   }
 
   return (
